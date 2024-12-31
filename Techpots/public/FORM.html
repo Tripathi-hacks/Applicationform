@@ -1,0 +1,602 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techpots Technology - Student Registration</title>
+    <style> 
+    body {
+    font-family: ui-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 25px 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 550;
+     color: #333;;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 13px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    background-color: #fff;
+    outline: none;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.form-group button:hover {
+    background: linear-gradient(135deg, #0056b3, #004091);
+    transform: translateY(-2px);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    .form-container h1 {
+        font-size: 20px;
+    }
+
+    .form-group button {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-container h1 {
+        font-size: 18px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .form-group button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Techpots Technology</h1>
+        <form id="registrationForm" action="/submit_registration" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="education">Education</label>
+                <select id="education" name="education" required>
+                    <option value="">Select your education</option>
+                    <option value="B TECH">B TECH</option>
+                    <option value="BCA">BCA</option>
+                    <option value="MBA">MBA</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <textarea id="skills" name="skills" placeholder="List your technical and soft skills" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Upload Resume</label>
+                <input type="file" id="resume" name="resume" accept=".pdf, .doc, .docx" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('registrationForm');
+
+            form.addEventListener('submit', function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+
+            function validateForm() {
+                let isValid = true;
+
+                // Validate Name
+                const name = document.getElementById('name').value.trim();
+                if (name === '') {
+                    alert(' Name is required.');
+                    isValid = false;
+                }
+
+                // Validate Email
+                const email = document.getElementById('email').value.trim();
+                if (!validateEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    isValid = false;
+                }
+
+                // Validate Phone
+                const phone = document.getElementById('phone').value.trim();
+                if (!validatePhone(phone)) {
+                    alert('Please enter a valid phone number (10 digits).');
+                    isValid = false;
+                }
+
+                // Validate Education
+                const education = document.getElementById('education').value;
+                if (education === '') {
+                    alert('Please select your education level.');
+                    isValid = false;
+                }
+
+                // Validate Skills
+                const skills = document.getElementById('skills').value.trim();
+                if (skills === '') {
+                    alert('Please list your skills.');
+                    isValid = false;
+                }
+
+                // Validate Resume
+                const resume = document.getElementById('resume').files[0];
+                if (!resume) {
+                    alert('Please upload your resume.');
+                    isValid = false;
+                } else if (!validateFile(resume)) {
+                    alert('Please upload a valid resume file (PDF, DOC, DOCX).');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function validatePhone(phone) {
+                const phoneRegex = /^\d{10}$/;
+                return phoneRegex.test(phone);
+            }
+
+            function validateFile(file) {
+                const allowedExtensions = ['pdf', 'doc', 'docx'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                return allowedExtensions.includes(fileExtension);
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Techpots Technology - Student Registration</title>
+    <style>
+        body {
+            font-family: ui-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 25px 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 550;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+            background-color: #fff;
+            outline: none;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .form-group button:hover {
+            background: linear-gradient(135deg, #0056b3, #004091);
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .form-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            overflow: auto;
+            padding-top: 60px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            margin: 5% auto;
+            padding: 30px 40px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: zoomIn 0.5s ease-out;
+        }
+
+        .modal .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal .close:hover,
+        .modal .close:focus {
+            color: #ffdd57;
+        }
+
+        /* FadeIn Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ZoomIn Animation */
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .form-container h1 {
+                font-size: 20px;
+            }
+
+            .form-group button {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            .form-container h1 {
+                font-size: 18px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .form-group button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Techpots Technology</h1>
+        <form id="registrationForm" action="/submit_registration" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="education">Education</label>
+                <select id="education" name="education" required>
+                    <option value="">Select your education</option>
+                    <option value="B TECH">B TECH</option>
+                    <option value="BCA">BCA</option>
+                    <option value="MBA">MBA</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <textarea id="skills" name="skills" placeholder="List your technical and soft skills" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Upload Resume</label>
+                <input type="file" id="resume" name="resume" accept=".pdf, .doc, .docx" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Registration Successful!</h2>
+            <p> Thank you for your interest in Techpots Technology. We will review your submission and get back to you soon.</p>
+        </div>
+    </div>
+
+    <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('registrationForm');
+            const successModal = document.getElementById('successModal');
+            const closeModal = document.querySelector('.modal .close');
+
+            form.addEventListener('submit', function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                } else {
+                    // Simulate successful registration and show success modal
+                    event.preventDefault(); // Prevent actual form submission for demo purpose
+                    successModal.style.display = 'block';
+                }
+            });
+
+            // Close the modal when the user clicks the close button
+            closeModal.addEventListener('click', function () {
+                successModal.style.display = 'none';
+            });
+
+            // Close the modal if the user clicks outside of the modal
+            window.addEventListener('click', function (event) {
+                if (event.target === successModal) {
+                    successModal.style.display = 'none';
+                }
+            });
+
+            function validateForm() {
+                let isValid = true;
+
+                // Validate Name
+                const name = document.getElementById('name').value.trim();
+                if (name === '') {
+                    alert('Please enter your full name.');
+                    isValid = false;
+                }
+
+                // Validate Email
+                const email = document.getElementById('email').value.trim();
+                if (email === '' || !validateEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    isValid = false;
+                }
+
+                // Validate Phone
+                const phone = document.getElementById('phone').value.trim();
+                if (phone === '' || phone.length < 10) {
+                    alert('Please enter a valid phone number.');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            function validateEmail(email) {
+                const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+    </script>
+</body>
+</html>
